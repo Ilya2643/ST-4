@@ -4,10 +4,10 @@ using System;
 namespace BugTests
 {
     [TestClass]
-    public class BugTests
+    public class BugStateTransitionTests
     {
         [TestMethod]
-        public void Open_Assign_ToAssigned()
+        public void OpenState_WhenAssigned_TransitionsToAssigned()
         {
             var bug = new Bug(Bug.State.Open);
             bug.Assign();
@@ -15,7 +15,7 @@ namespace BugTests
         }
 
         [TestMethod]
-        public void Assigned_Close_ToClosed()
+        public void AssignedState_WhenClosed_TransitionsToClosed()
         {
             var bug = new Bug(Bug.State.Assigned);
             bug.Close();
@@ -24,7 +24,7 @@ namespace BugTests
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void Open_Close_Throws()
+        public void OpenState_WhenClosed_ThrowsInvalidOperation()
         {
             var bug = new Bug(Bug.State.Open);
             bug.Close();
@@ -32,14 +32,14 @@ namespace BugTests
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void Closed_Assign_Throws()
+        public void ClosedState_WhenAssigned_ThrowsInvalidOperation()
         {
             var bug = new Bug(Bug.State.Closed);
             bug.Assign();
         }
 
         [TestMethod]
-        public void Resolved_Test_ToTesting()
+        public void ResolvedState_WhenTested_TransitionsToTesting()
         {
             var bug = new Bug(Bug.State.Resolved);
             bug.Test();
@@ -47,7 +47,7 @@ namespace BugTests
         }
 
         [TestMethod]
-        public void Testing_Reject_ToRejected()
+        public void TestingState_WhenRejected_TransitionsToRejected()
         {
             var bug = new Bug(Bug.State.Testing);
             bug.Reject();
@@ -55,7 +55,7 @@ namespace BugTests
         }
 
         [TestMethod]
-        public void FullWorkflow_OpenToClosed()
+        public void CompleteWorkflow_FromOpenToClosed_SuccessfullyTransitions()
         {
             var bug = new Bug(Bug.State.Open);
             bug.Assign();
@@ -67,7 +67,7 @@ namespace BugTests
         }
 
         [TestMethod]
-        public void Rejected_Reopen_ToReopened()
+        public void RejectedState_WhenReopened_TransitionsToReopened()
         {
             var bug = new Bug(Bug.State.Rejected);
             bug.Reopen();
@@ -75,15 +75,15 @@ namespace BugTests
         }
 
         [TestMethod]
-        public void Defered_Assign_ToAssigned()
+        public void DeferredState_WhenAssigned_TransitionsToAssigned()
         {
-            var bug = new Bug(Bug.State.Defered);
+            var bug = new Bug(Bug.State.Deferred);
             bug.Assign();
             Assert.AreEqual(Bug.State.Assigned, bug.GetState());
         }
 
         [TestMethod]
-        public void Verified_Reopen_ToReopened()
+        public void VerifiedState_WhenReopened_TransitionsToReopened()
         {
             var bug = new Bug(Bug.State.Verified);
             bug.Reopen();
@@ -91,7 +91,7 @@ namespace BugTests
         }
 
         [TestMethod]
-        public void Closed_Reopen_ToReopened()
+        public void ClosedState_WhenReopened_TransitionsToReopened()
         {
             var bug = new Bug(Bug.State.Closed);
             bug.Reopen();
@@ -99,7 +99,7 @@ namespace BugTests
         }
 
         [TestMethod]
-        public void Reopened_Close_ToClosed()
+        public void ReopenedState_WhenClosed_TransitionsToClosed()
         {
             var bug = new Bug(Bug.State.Reopened);
             bug.Close();
@@ -107,7 +107,7 @@ namespace BugTests
         }
 
         [TestMethod]
-        public void Assigned_Assign_NoChange()
+        public void AssignedState_WhenAssignedAgain_RemainsAssigned()
         {
             var bug = new Bug(Bug.State.Assigned);
             bug.Assign();
@@ -116,7 +116,7 @@ namespace BugTests
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void Testing_Close_Throws()
+        public void TestingState_WhenClosed_ThrowsInvalidOperation()
         {
             var bug = new Bug(Bug.State.Testing);
             bug.Close();
@@ -124,14 +124,14 @@ namespace BugTests
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void Rejected_Verify_Throws()
+        public void RejectedState_WhenVerified_ThrowsInvalidOperation()
         {
             var bug = new Bug(Bug.State.Rejected);
             bug.Verify();
         }
 
         [TestMethod]
-        public void ComplexWorkflow_WithReject()
+        public void ComplexWorkflow_WithRejection_SuccessfullyCompletes()
         {
             var bug = new Bug(Bug.State.Open);
             bug.Assign();
@@ -146,14 +146,14 @@ namespace BugTests
         }
 
         [TestMethod]
-        public void InitialState_Open()
+        public void NewBug_WithOpenState_HasCorrectInitialState()
         {
             var bug = new Bug(Bug.State.Open);
             Assert.AreEqual(Bug.State.Open, bug.GetState());
         }
 
         [TestMethod]
-        public void InitialState_Closed()
+        public void NewBug_WithClosedState_HasCorrectInitialState()
         {
             var bug = new Bug(Bug.State.Closed);
             Assert.AreEqual(Bug.State.Closed, bug.GetState());
@@ -161,22 +161,22 @@ namespace BugTests
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void Defered_Close_Throws()
+        public void DeferredState_WhenClosed_ThrowsInvalidOperation()
         {
-            var bug = new Bug(Bug.State.Defered);
+            var bug = new Bug(Bug.State.Deferred);
             bug.Close();
         }
 
         [TestMethod]
         [ExpectedException(typeof(InvalidOperationException))]
-        public void Reopened_Test_Throws()
+        public void ReopenedState_WhenTested_ThrowsInvalidOperation()
         {
             var bug = new Bug(Bug.State.Reopened);
             bug.Test();
         }
 
         [TestMethod]
-        public void UltimateTest()
+        public void ComprehensiveWorkflow_WithAllTransitions_SuccessfullyCompletes()
         {
             var bug = new Bug(Bug.State.Open);
             bug.Assign();
