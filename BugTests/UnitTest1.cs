@@ -78,19 +78,6 @@ namespace BugTests
         public void DeferredState_WhenAssigned_TransitionsToAssigned()
         {
             var bug = new Bug(Bug.State.Deferred);
- Check failure on line 80 in BugTests/UnitTest1.cs
-
-GitHub Actions
-/ build
-
-'Bug.State' does not contain a definition for 'Deferred'
-
- Check failure on line 80 in BugTests/UnitTest1.cs
-
-GitHub Actions
-/ build
-
-'Bug.State' does not contain a definition for 'Deferred'
             bug.Assign();
             Assert.AreEqual(Bug.State.Assigned, bug.GetState());
         }
@@ -177,19 +164,6 @@ GitHub Actions
         public void DeferredState_WhenClosed_ThrowsInvalidOperation()
         {
             var bug = new Bug(Bug.State.Deferred);
- Check failure on line 166 in BugTests/UnitTest1.cs
-
-GitHub Actions
-/ build
-
-'Bug.State' does not contain a definition for 'Deferred'
-
- Check failure on line 166 in BugTests/UnitTest1.cs
-
-GitHub Actions
-/ build
-
-'Bug.State' does not contain a definition for 'Deferred'
             bug.Close();
         }
 
